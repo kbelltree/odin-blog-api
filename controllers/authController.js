@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const userService = require('../services/userService');
+const jwt = require('jsonwebtoken');
 
 async function createNewUser(req, res, next) {
   try {
@@ -22,4 +23,25 @@ async function createNewUser(req, res, next) {
   }
 }
 
-module.exports = { createNewUser };
+async function login(req, res, next) {
+  const { email, password } = req.body;
+  try {
+    const user = await userService.findUserByEmail(email);
+    console.log('user ', user);
+    if (!user) {
+      return res.status(401).json({ error: 'The email is not registered' });
+    }
+    const isPWMatched = await bcrypt.compare(password, user.password);
+    if (!isPWMatched) {
+      return res.status(401).json({ error: 'Incorrect password' });
+    }
+    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+    return res.status(200).json({ token });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+module.exports = { createNewUser, login };

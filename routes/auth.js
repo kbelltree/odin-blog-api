@@ -16,10 +16,12 @@ auth.post(
 );
 
 // GET login form
-// auth.get('/login');
+auth.get('/login', (req, res) => {
+  return res.send('GET HTTP method on login resource');
+});
 
-// POST login form
-// auth.post('/login');
+// POST login route -> compare hash  -> send token
+auth.post('/login', authValidator.validateLogInItems, authController.login);
 
 // POST logout
 // auth.post('/logout');

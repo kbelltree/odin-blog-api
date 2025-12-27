@@ -13,4 +13,16 @@ const validateNewUser = [
   },
 ];
 
-module.exports = { validateNewUser };
+const validateLogInItems = [
+  body('email').trim().notEmpty().isEmail().toLowerCase(),
+  body('password').trim().notEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+  },
+];
+
+module.exports = { validateNewUser, validateLogInItems };

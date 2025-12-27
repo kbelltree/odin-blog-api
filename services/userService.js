@@ -13,4 +13,10 @@ async function createUser(email, username, hashedPassword) {
   });
 }
 
-module.exports = { createUser };
+async function findUserByEmail(email) {
+  return await prisma.user.findUnique({
+    where: { email },
+  });
+}
+
+module.exports = { createUser, findUserByEmail };
