@@ -1,19 +1,19 @@
 const express = require('express');
-const routes = require('./routes');
+const authRouter = require('./routes/auth');
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/posts', routes.posts);
-app.use('/auth', routes.auth);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   return res.status(404).json({ error: '404 - Page Not Found.' });
 });
 
 app.use((err, req, res, next) => {
+  console.error(err);
   return res.status(500).json({ error: '500 - Something went wrong.' });
 });
 
