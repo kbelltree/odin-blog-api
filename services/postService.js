@@ -2,8 +2,7 @@ const prisma = require('../lib/prisma');
 
 // For Public
 
-// GET: All posts excluding content that are marked 'true in published (option: all or integer)
-async function listPublishedPosts(isPublished) {
+async function listPublishedPosts() {
   return await prisma.post.findMany({
     where: {
       published: true,
@@ -16,6 +15,7 @@ async function listPublishedPosts(isPublished) {
     },
   });
 }
+
 // GET: A full post items that is 'published' and has a specific postId
 async function listPublishedPostById(postId) {
   return await prisma.post.findFirst({
