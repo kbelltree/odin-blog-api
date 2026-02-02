@@ -1,7 +1,5 @@
 const prisma = require('../lib/prisma');
 
-// For Public
-
 async function listPublishedPosts() {
   return await prisma.post.findMany({
     where: {
@@ -49,7 +47,25 @@ async function listPublishedPostById(postId) {
   });
 }
 
+//GET:  All post items where authorId === req.user.id
+async function listPostsByCurrentUserId(userId) {
+  prisma.post.findMany({
+    where: {
+      authorId: userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      published: true,
+      publishedAt: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
 module.exports = {
   listPublishedPosts,
   listPublishedPostById,
+  listPostsByCurrentUserId,
 };

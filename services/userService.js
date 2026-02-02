@@ -19,4 +19,10 @@ async function findUserByEmail(email) {
   });
 }
 
-module.exports = { createUser, findUserByEmail };
+async function findUserById(id) {
+  return await prisma.user.findUnique({
+    where: { id },
+  });
+}
+
+module.exports = { createUser, findUserByEmail, findUserById };

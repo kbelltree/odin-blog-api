@@ -10,9 +10,6 @@ async function getAllPublishedPosts(req, res, next) {
 }
 
 async function getPublishedPostById(req, res, next) {
-  console.log('originalUrl:', req.originalUrl);
-  console.log('params:', req.params);
-
   const { postId } = req.params;
   try {
     const post = await postService.listPublishedPostById(postId);
@@ -25,7 +22,18 @@ async function getPublishedPostById(req, res, next) {
   }
 }
 
+async function getAllPostsByCurrentUserId(req, res, next) {
+  const userId = req.user.id;
+  try {
+    const posts = await postService.listPostsByCurrentUserId(userId);
+    return res.json(posts);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   getAllPublishedPosts,
   getPublishedPostById,
+  getAllPostsByCurrentUserId,
 };

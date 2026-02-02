@@ -2,23 +2,21 @@ const { Router } = require('express');
 const postController = require('../controllers/postController');
 const uuidValidator = require('../middlewares/validations/uuidValidator');
 const posts = Router();
+const passport = require('passport');
+const authenticateJWT = passport.authenticate('jwt', { session: false });
 
-// For Public
-
-// GET all published posts
+// GET all published posts (public)
 posts.get('/', postController.getAllPublishedPosts);
 
-// GET a published post by id
+// GET all posts where authorId === req.user.id (protected)
+posts.get('/me', authenticateJWT, postController.getAllPostsByCurrentUserId);
+
+// GET a published post by id (public)
 posts.get(
   '/:postId',
   uuidValidator.validateUuidInParam('postId'),
   postController.getPublishedPostById
 );
-
-// For Authed
-
-// GET all posts where authorId === req.user.id.
-// posts.get('/me');
 
 // POST a new blog post as draft
 // posts.post('/');
