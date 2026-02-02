@@ -9,7 +9,7 @@ const validateNewUser = [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    next();
+    return next();
   },
 ];
 
@@ -21,7 +21,7 @@ const validateLogInItems = [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    next();
+    return next();
   },
 ];
 
