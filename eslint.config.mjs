@@ -1,9 +1,12 @@
 import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url); // Create a require function relative to the current file's URL
+const prettier = require('eslint-config-prettier');
 
 export default defineConfig([
   {
-    ignores: ['node_modules/**', '.env'],
+    ignores: ['node_modules/**', '.env', 'generated/**'],
   },
 
   js.configs.recommended,
@@ -12,11 +15,12 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'commonjs',
-    },
-
-    env: {
-      node: true,
-      es2024: true,
+      globals: {
+        process: 'readonly',
+        console: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
     },
 
     rules: {
@@ -25,7 +29,13 @@ export default defineConfig([
     },
   },
 
+  // Treat .mjs files as modules so ESM config files parse correctly
   {
-    extends: ['prettier'],
+    files: ['**/*.mjs'],
+    languageOptions: {
+      sourceType: 'module',
+    },
   },
+
+  prettier,
 ]);
