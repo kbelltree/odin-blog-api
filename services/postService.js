@@ -9,8 +9,11 @@ async function listPublishedPosts() {
       id: true,
       title: true,
       publishedAt: true,
-      authorId: true,
+      author: {
+        select: { username: true },
+      },
     },
+    orderBy: { publishedAt: 'desc' },
   });
 }
 
@@ -22,12 +25,12 @@ async function listPublishedPostById(postId) {
       published: true,
     },
     select: {
+      id: true,
       title: true,
       content: true,
       publishedAt: true,
       author: {
         select: {
-          id: true,
           username: true,
         },
       },
@@ -37,11 +40,11 @@ async function listPublishedPostById(postId) {
           content: true,
           commentAuthor: {
             select: {
-              id: true,
               username: true,
             },
           },
         },
+        orderBy: { createAt: 'desc' },
       },
     },
   });
