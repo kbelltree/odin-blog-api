@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node --watch app.js",
     "format": "prettier --write .",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "db:seed": "npx prisma db seed",
+    "db:rebuild": "npx prisma migrate reset --force && npx prisma db seed"
   },
   "keywords": [],
   "author": "Keiko.S",
