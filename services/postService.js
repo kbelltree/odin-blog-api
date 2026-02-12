@@ -3,7 +3,7 @@ const prisma = require('../lib/prisma');
 async function listPublishedPosts() {
   return await prisma.post.findMany({
     where: {
-      published: true,
+      publishedAt: { not: null },
     },
     select: {
       id: true,
@@ -22,7 +22,7 @@ async function listPublishedPostById(postId) {
   return await prisma.post.findFirst({
     where: {
       id: postId,
-      published: true,
+      publishedAt: { not: null },
     },
     select: {
       id: true,
@@ -59,7 +59,6 @@ async function listPostsByCurrentUserId(userId) {
     select: {
       id: true,
       title: true,
-      published: true,
       publishedAt: true,
       createdAt: true,
     },
