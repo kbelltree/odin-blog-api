@@ -27,7 +27,6 @@ async function login(req, res, next) {
   const { email, password } = req.body;
   try {
     const user = await userService.findUserByEmail(email);
-    console.log('user ', user);
     if (!user) {
       return res.status(401).json({ error: 'The email is not registered' });
     }

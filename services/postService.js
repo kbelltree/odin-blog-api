@@ -44,7 +44,7 @@ async function listPublishedPostById(postId) {
             },
           },
         },
-        orderBy: { createAt: 'desc' },
+        orderBy: { createdAt: 'desc' },
       },
     },
   });
