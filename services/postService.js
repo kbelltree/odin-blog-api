@@ -17,7 +17,6 @@ async function listPublishedPosts() {
   });
 }
 
-// GET: A full post items that is 'published' and has a specific postId
 async function listPublishedPostById(postId) {
   return await prisma.post.findFirst({
     where: {
@@ -50,9 +49,8 @@ async function listPublishedPostById(postId) {
   });
 }
 
-//GET:  All post items where authorId === req.user.id
 async function listPostsByCurrentUserId(userId) {
-  prisma.post.findMany({
+  return prisma.post.findMany({
     where: {
       authorId: userId,
     },
@@ -66,8 +64,86 @@ async function listPostsByCurrentUserId(userId) {
   });
 }
 
+async function createPost(title, content, userId) {
+  return await prisma.post.create({
+    data: {
+      title,
+      content,
+      authorId: userId,
+    },
+    select: { id: true, createdAt: true, publishedAt: true },
+  });
+}
+
+async function publishPostById(postId, userId) {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+      authorId: userId,
+    },
+    data: {
+      publishedAt: new Date(),
+    },
+    select: {
+      id: true,
+      publishedAt: true,
+    },
+  });
+}
+
+async function unpublishPostById(postId, userId) {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+      authorId: userId,
+    },
+    data: {
+      publishedAt: null,
+    },
+    select: {
+      id: true,
+      publishedAt: true,
+    },
+  });
+}
+
+async function updatePostById(postId, userId, title, content) {
+  return await prisma.post.update({
+    where: {
+      id: postId,
+      authorId: userId,
+    },
+    data: {
+      title: title,
+      content: content,
+      publishedAt: new Date(),
+    },
+    select: {
+      id: true,
+      publishedAt: true,
+    },
+  });
+}
+
+async function deletePostById(postId, userId) {
+  return await prisma.post.delete({
+    where: {
+      id: postId,
+      authorId: userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+}
+
 module.exports = {
   listPublishedPosts,
   listPublishedPostById,
   listPostsByCurrentUserId,
+  createPost,
+  publishPostById,
+  unpublishPostById,
+  updatePostById,
+  deletePostById,
 };

@@ -1,37 +1,58 @@
 const { Router } = require('express');
 const postController = require('../controllers/postController');
+const userController = require('../controllers/userController');
 const uuidValidator = require('../middlewares/validations/uuidValidator');
+const postValidator = require('../middlewares/validations/postValidator');
 const posts = Router();
 const passport = require('passport');
 const authenticateJWT = passport.authenticate('jwt', { session: false });
 
-// GET all published posts (public)
+// Public
 posts.get('/', postController.getAllPublishedPosts);
 
-// GET all posts where authorId === req.user.id (protected)
-posts.get('/me', authenticateJWT, postController.getAllPostsByCurrentUserId);
-
-// GET a published post by id (public)
 posts.get(
   '/:postId',
   uuidValidator.validateUuidInParam('postId'),
   postController.getPublishedPostById
 );
 
-// POST a new blog post as draft
-// posts.post('/');
+// Protected
+posts.post(
+  '/',
+  authenticateJWT,
+  userController.authorizeAuthor,
+  postValidator.validatePost,
+  postController.createPostDraft
+);
 
-// DELETE an existing blog post by postId and matching authorId
-// posts.delete('/:postId');
+posts.put(
+  '/:postId/publish',
+  authenticateJWT,
+  userController.authorizeAuthor,
+  postController.publishPost
+);
 
-// PUT an existing blog post by postId and matching authorId
-// posts.put('/:postId');
+posts.put(
+  '/:postId/unpublish',
+  authenticateJWT,
+  userController.authorizeAuthor,
+  postController.unpublishPost
+);
 
-// PUT a published post to unpublish by postId
-// posts.put('/:postId');
+posts.put(
+  '/:postId',
+  authenticateJWT,
+  userController.authorizeAuthor,
+  postValidator.validatePost,
+  postController.updatePost
+);
 
-// PUT a draft to publish by postId
-// posts.put('/:postId');
+posts.delete(
+  '/:postId',
+  authenticateJWT,
+  userController.authorizeAuthor,
+  postController.deletePost
+);
 
 // POST a comment by postId
 // posts.post('/:postId/comments');
