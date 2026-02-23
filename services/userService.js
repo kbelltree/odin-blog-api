@@ -25,4 +25,17 @@ async function findUserById(id) {
   });
 }
 
-module.exports = { createUser, findUserByEmail, findUserById };
+async function promoteToAuthor(id) {
+  return await prisma.user.update({
+    where: { id },
+    data: { isAuthor: true },
+    select: { username: true, isAuthor: true },
+  });
+}
+
+module.exports = {
+  createUser,
+  findUserByEmail,
+  findUserById,
+  promoteToAuthor,
+};
