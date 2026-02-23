@@ -61,7 +61,7 @@ const validateLogInItems = [
       return res.status(400).json({ error: errorMessage });
     }
 
-    next();
+    return next();
   },
 ];
 
