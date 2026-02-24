@@ -27,6 +27,7 @@ posts.post(
 
 posts.put(
   '/:postId/publish',
+  uuidValidator.validateUuidInParam('postId'),
   authenticateJWT,
   userController.authorizeAuthor,
   postController.publishPost
@@ -34,6 +35,7 @@ posts.put(
 
 posts.put(
   '/:postId/unpublish',
+  uuidValidator.validateUuidInParam('postId'),
   authenticateJWT,
   userController.authorizeAuthor,
   postController.unpublishPost
@@ -41,6 +43,7 @@ posts.put(
 
 posts.put(
   '/:postId',
+  uuidValidator.validateUuidInParam('postId'),
   authenticateJWT,
   userController.authorizeAuthor,
   postValidator.validatePost,
@@ -49,12 +52,10 @@ posts.put(
 
 posts.delete(
   '/:postId',
+  uuidValidator.validateUuidInParam('postId'),
   authenticateJWT,
   userController.authorizeAuthor,
   postController.deletePost
 );
-
-// POST a comment by postId
-// posts.post('/:postId/comments');
 
 module.exports = posts;
