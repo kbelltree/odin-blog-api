@@ -37,6 +37,7 @@ async function listPublishedPostById(postId) {
         select: {
           id: true,
           content: true,
+          createdAt: true,
           commentAuthor: {
             select: {
               username: true,
@@ -114,8 +115,8 @@ async function updatePostById(postId, userId, title, content) {
       authorId: userId,
     },
     data: {
-      title: title,
-      content: content,
+      title,
+      content,
       publishedAt: new Date(),
     },
     select: {

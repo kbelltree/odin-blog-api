@@ -1,4 +1,5 @@
 const postService = require('../services/postService');
+const commentService = require('../services/commentService');
 
 async function getAllPublishedPosts(req, res, next) {
   try {
@@ -27,7 +28,7 @@ async function getPublishedPostById(req, res, next) {
 
 async function getAllPostsByCurrentUserId(req, res, next) {
   const userId = req.user.id;
-  console.log('currentUserId: ', userId);
+
   try {
     const posts = await postService.listPostsByCurrentUserId(userId);
 
@@ -110,6 +111,23 @@ async function deletePost(req, res, next) {
   }
 }
 
+async function createComment(req, res, next) {
+  const { postId } = req.params;
+  const { content } = req.body;
+
+  try {
+    const result = await commentService.createCommentById(
+      postId,
+      content,
+      req.user.id
+    );
+
+    return res.status(200).json(result);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   getAllPublishedPosts,
   getPublishedPostById,
@@ -119,4 +137,5 @@ module.exports = {
   unpublishPost,
   updatePost,
   deletePost,
+  createComment,
 };

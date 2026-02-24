@@ -9,4 +9,10 @@ const validatePost = [
   validationErrorHandler.handleErrors,
 ];
 
-module.exports = { validatePost };
+const validateComment = [
+  body('content').trim().notEmpty().withMessage('Comment can not be empty.'),
+
+  validationErrorHandler.handleErrors,
+];
+
+module.exports = { validatePost, validateComment };

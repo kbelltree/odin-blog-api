@@ -1,5 +1,19 @@
 const prisma = require('../lib/prisma');
 
-// For Public
+async function createCommentById(postId, content, userId) {
+  return await prisma.comment.create({
+    data: {
+      postId,
+      content,
+      commentAuthorId: userId,
+    },
+    select: {
+      id: true,
+      postId: true,
+    },
+  });
+}
 
-// GET: All comments related to the post displayed
+module.exports = {
+  createCommentById,
+};
