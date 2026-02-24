@@ -1,16 +1,11 @@
-const { param, validationResult } = require('express-validator');
+const { param } = require('express-validator');
+const validationErrorHandler = require('./validationErrorHandler');
 
 function validateUuidInParam(paramName) {
   return [
-    param(paramName).isUUID(),
+    param(paramName).isUUID().withMessage('The id format is invalid.'),
 
-    (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      return next();
-    },
+    validationErrorHandler.handleErrors,
   ];
 }
 

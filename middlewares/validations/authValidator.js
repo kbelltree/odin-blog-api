@@ -1,4 +1,5 @@
-const { body, validationResult } = require('express-validator');
+const { body } = require('express-validator');
+const validationErrorHandler = require('./validationErrorHandler');
 
 const validateNewUser = [
   body('email')
@@ -23,20 +24,7 @@ const validateNewUser = [
     .isLength({ min: 8 })
     .withMessage('Password must have at least 8 characters.'),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      // All errors is returned in string instead of array list
-      const errorMessage = errors
-        .array()
-        .map((error) => error.msg)
-        .join();
-      return res.status(400).json({ error: errorMessage });
-    }
-
-    return next();
-  },
+  validationErrorHandler.handleErrors,
 ];
 
 const validateLogInItems = [
@@ -50,19 +38,7 @@ const validateLogInItems = [
 
   body('password').trim().notEmpty().withMessage('Password is required.'),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const errorMessage = errors
-        .array()
-        .map((error) => error.msg)
-        .join();
-      return res.status(400).json({ error: errorMessage });
-    }
-
-    return next();
-  },
+  validationErrorHandler.handleErrors,
 ];
 
 module.exports = { validateNewUser, validateLogInItems };
