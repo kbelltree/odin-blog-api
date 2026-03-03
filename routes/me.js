@@ -6,6 +6,8 @@ const userController = require('../controllers/userController');
 
 const me = Router();
 
+me.get('/', authenticateJWT, userController.getUserInfo);
+
 me.get('/posts', authenticateJWT, postController.getAllPostsByCurrentUserId);
 
 me.post('/author', authenticateJWT, userController.enableAuthorRole);
