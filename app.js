@@ -3,7 +3,7 @@ const cors = require('cors');
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const { findUserById } = require('./services/userService');
+const { findUserByIdForJwt } = require('./services/userService');
 
 const app = express();
 
@@ -31,7 +31,7 @@ const tokenExtractOptions = {
 passport.use(
   new JwtStrategy(tokenExtractOptions, async (jwt_payload, done) => {
     try {
-      const user = await findUserById(jwt_payload.sub);
+      const user = await findUserByIdForJwt(jwt_payload.sub);
 
       if (!user) {
         return done(null, false);

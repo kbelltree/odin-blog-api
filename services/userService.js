@@ -19,9 +19,14 @@ async function findUserByEmail(email) {
   });
 }
 
-async function findUserById(id) {
+async function findUserByIdForJwt(id) {
   return await prisma.user.findUnique({
     where: { id },
+    select: {
+      id: true,
+      username: true,
+      isAuthor: true,
+    },
   });
 }
 
@@ -36,6 +41,6 @@ async function promoteToAuthor(id) {
 module.exports = {
   createUser,
   findUserByEmail,
-  findUserById,
+  findUserByIdForJwt,
   promoteToAuthor,
 };
