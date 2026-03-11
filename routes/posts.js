@@ -22,7 +22,7 @@ posts.post(
   authenticateJWT,
   userController.authorizeAuthor,
   postValidator.validatePost,
-  postController.createPostDraft
+  postController.createPost
 );
 
 posts.put(

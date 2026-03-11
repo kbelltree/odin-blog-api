@@ -17,7 +17,7 @@ async function listPublishedPosts() {
   });
 }
 
-async function listPublishedPostById(postId) {
+async function findPublishedPostById(postId) {
   return await prisma.post.findFirst({
     where: {
       id: postId,
@@ -65,12 +65,28 @@ async function listPostsByCurrentUserId(userId) {
   });
 }
 
-async function createPost(title, content, userId) {
+async function findProtectedPostById(postId, userId) {
+  return await prisma.post.findFirst({
+    where: {
+      id: postId,
+      authorId: userId,
+    },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      publishedAt: true,
+    },
+  });
+}
+
+async function createPost(title, content, userId, shouldPublish = false) {
   return await prisma.post.create({
     data: {
       title,
       content,
       authorId: userId,
+      publishedAt: shouldPublish ? new Date() : null,
     },
     select: { id: true, createdAt: true, publishedAt: true },
   });
@@ -140,8 +156,9 @@ async function deletePostById(postId, userId) {
 
 module.exports = {
   listPublishedPosts,
-  listPublishedPostById,
+  findPublishedPostById,
   listPostsByCurrentUserId,
+  findProtectedPostById,
   createPost,
   publishPostById,
   unpublishPostById,
