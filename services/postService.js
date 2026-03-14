@@ -133,7 +133,6 @@ async function updatePostById(postId, userId, title, content) {
     data: {
       title,
       content,
-      publishedAt: new Date(),
     },
     select: {
       id: true,
