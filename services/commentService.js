@@ -14,6 +14,39 @@ async function createCommentById(postId, content, userId) {
   });
 }
 
+async function deleteCommentById(commentId, postId, userId) {
+  const comment = await prisma.comment.findFirst({
+    where: {
+      id: commentId,
+      postId,
+      post: {
+        authorId: userId,
+      },
+    },
+    select: {
+      id: true,
+      postId: true,
+      post: {
+        select: {
+          authorId: true,
+        },
+      },
+    },
+  });
+
+  if (!comment) return null;
+
+  return await prisma.comment.delete({
+    where: {
+      id: commentId,
+    },
+    select: {
+      id: true,
+    },
+  });
+}
+
 module.exports = {
   createCommentById,
+  deleteCommentById,
 };

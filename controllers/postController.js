@@ -150,6 +150,22 @@ async function createComment(req, res, next) {
   }
 }
 
+async function deleteComment(req, res, next) {
+  const { postId, commentId } = req.params;
+
+  try {
+    const deletedId = await commentService.deleteCommentById(
+      commentId,
+      postId,
+      req.user.id
+    );
+
+    return res.status(200).json(deletedId);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   getAllPublishedPosts,
   getPublishedPostById,
@@ -161,4 +177,5 @@ module.exports = {
   updatePost,
   deletePost,
   createComment,
+  deleteComment,
 };

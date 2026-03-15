@@ -66,4 +66,12 @@ posts.post(
   postController.createComment
 );
 
+posts.delete(
+  '/:postId/comments/:commentId',
+  uuidValidator.validateUuidInParam('postId'),
+  uuidValidator.validateUuidInParam('commentId'),
+  authenticateJWT,
+  postController.deleteComment
+);
+
 module.exports = posts;
