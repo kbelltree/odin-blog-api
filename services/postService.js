@@ -76,6 +76,19 @@ async function findProtectedPostById(postId, userId) {
       title: true,
       content: true,
       publishedAt: true,
+      comments: {
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          commentAuthor: {
+            select: {
+              username: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      },
     },
   });
 }
