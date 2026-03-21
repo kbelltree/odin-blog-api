@@ -1,17 +1,20 @@
 const prisma = require('../lib/prisma.js');
 const { users } = require('./seedData.js');
+const bcrypt = require('bcryptjs');
 
 async function main() {
   console.log('Start seeding...');
 
   for (const user of users) {
+    const hashedPassword = await bcrypt.hash(user.password, 12);
+
     await prisma.user.upsert({
       where: { username: user.username },
       update: {},
       create: {
         email: user.email,
         username: user.username,
-        password: user.password,
+        password: hashedPassword,
         isAuthor: user.isAuthor,
         posts: {
           create: user.posts,
