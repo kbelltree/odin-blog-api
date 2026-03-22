@@ -11,11 +11,18 @@ const authRouter = require('./routes/auth');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/me');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50kb' }));
+app.use(express.urlencoded({ extended: true, limit: '50kb' }));
+
+const allowedOrigins = ['http://localhost:5173'];
+
+// For production
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
 
 const corsOptions = {
-  origin: ['http://localhost:5173'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -51,15 +58,20 @@ app.use('/posts', postsRouter);
 app.use('/me', userRouter);
 
 app.use((req, res, next) => {
-  return res.status(404).json({ error: '404 - Page Not Found.' });
+  return res.status(404).json({ error: 'Page Not Found.' });
 });
 
 app.use((err, req, res, next) => {
   console.error(err);
-  return res.status(500).json({ error: '500 - Something went wrong.' });
+
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({ error: 'Request body is too large.' });
+  }
+
+  return res.status(500).json({ error: 'Something went wrong.' });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Blog API - listening on port ${PORT}`);
 });
