@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node --watch app.js",
+    "dev": "node --watch app.js",
+    "start": "node app.js",
     "format": "prettier --write .",
     "lint": "eslint . --fix",
     "db:seed": "npx prisma db seed",
