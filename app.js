@@ -53,6 +53,14 @@ passport.use(
 
 app.use(passport.initialize());
 
+// Health check
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    uptime: process.uptime(),
+    status: 'ok',
+  });
+});
+
 app.use('/auth', authRouter);
 app.use('/posts', postsRouter);
 app.use('/me', userRouter);
