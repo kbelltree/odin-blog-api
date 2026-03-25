@@ -10,6 +10,7 @@ export default defineConfig({
     seed: 'node prisma/seed.js',
   },
   datasource: {
-    url: env('DATABASE_URL'),
+    // url: env('DATABASE_URL'), // for local pg connection
+    url: env('DIRECT_URL'), //for neon connection
   },
 });
