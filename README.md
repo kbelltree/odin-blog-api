@@ -2,7 +2,7 @@
 
 This is an **API-only** backend project for a blog site, built with a **RESTful** structure. The project focuses on separating backend and frontend code into different codebases and practicing communication between a backend API and a frontend application.
 
-The frontend for this project is built in a separate repository.
+The frontend for this project is built in a separate repository ([frontend repo](https://github.com/kbelltree/odin-blog-api-frontend)).
 
 For the full assignment details, see: [The Odin Project - Blog API](https://www.theodinproject.com/lessons/node-path-nodejs-blog-api).
 
@@ -42,12 +42,26 @@ For the full assignment details, see: [The Odin Project - Blog API](https://www.
 4. **Frontend flow** <br>
    - A separate frontend fetches and displays data from this API
 
+## Live Links
+
+- Frontend: https://odin-blog-api-frontend.onrender.com
+- API: https://odin-blog-api-txij.onrender.com
+- Health check: https://odin-blog-api-txij.onrender.com/health
+
 ## Built With
 
 - Prisma ORM
 - PostgreSQL
 - Express
 - Passport.js
-- JSONwebtoken
+- jsonwebtoken
 - bycriptjs
 - cors
+- Neon
+- Render
+
+## ToDo
+
+- npm audit shows remaining transitive vulnerabilities through Prisma 7 dependencies
+- do not run npm audit fix --force because it downgrades Prisma to 6.x
+- recheck audit when updating Prisma / Express later
